@@ -11,22 +11,24 @@ const io = socketio(server);
 //Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+const botName = 'ChatCord Bot';
+
 // Run when a client connects
 io.on('connection', socket => {
 
     socket.emit('message', formatMessage(botName , 'Welcome to ChatCord!'));
 
     // notify when a user connects
-    socket.broadcast.emit('message', 'A user has Joined the chat');
+    socket.broadcast.emit('message', formatMessage(botName , 'A user has Joined the chat'));
 
     // Notfies when client leaves
     socket.on('disconnect', () => {
-        io.emit('message', 'A user has left the chat')
+        io.emit('message', formatMessage(botName , 'A user has left the chat'))
     });
 
     //listen for chatMessage
     socket.on('chatMessage', msg => {
-        io.emit('message', msg)
+        io.emit('message',formatMessage('USER',  msg))
     })
 });
 

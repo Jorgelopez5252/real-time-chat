@@ -3,6 +3,9 @@ const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
 const formatMessage = require("./utils/messages");
+const {useJoin, getCurrentUser, userJoin} = require("./utils/users");
+
+
 
 const app = express();
 const server = http.createServer(app);
@@ -16,15 +19,18 @@ const botName = "ChatCord Bot";
 // Run when a client connects
 io.on("connection", (socket) => {
   socket.on("joinRoom", ({ username, room }) => {
-    
+    const user = userJoin(socket.id, username,room);
+
+    socket.join(user.room);
+
 
     //welcome new user
     socket.emit("message", formatMessage(botName, "Welcome to ChatCord!"));
 
     // brodcast when a user connects
-    socket.broadcast.emit(
+    socket.broadcast.to(user.room).emit(
       "message",
-      formatMessage(botName, "A user has Joined the chat")
+      formatMessage(botName, `${user.username} has Joined the chat`)
     );
   });
 

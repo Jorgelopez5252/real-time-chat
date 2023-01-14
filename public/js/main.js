@@ -9,7 +9,14 @@ const {username, room } = Qs.parse(location.search, {
 const socket = io();
 
 //join chat room
-socket.emit('joinRoom' , {username, room})
+socket.emit('joinRoom' , {username, room});
+
+//get room and users
+socket.on('roomUsers', ({room, users}) => {
+    outputRoomName(room);
+    outputUsers(users);
+
+})
 
 //message from server
 socket.on('message', message => {
@@ -46,4 +53,9 @@ div.innerHTML = `<p class="meta">${message.username} <span>${message.time}</span
     ${message.text}
 </p>`;
 document.querySelector('.chat-messages').appendChild(div);
+}
+
+//add room name to DOM
+function outputRoomName(room) {
+    
 }

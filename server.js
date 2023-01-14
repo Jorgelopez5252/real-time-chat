@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Run when a client connects
 io.on('connection', socket => {
 
-    socket.emit('message', 'Welcome to Speak up');
+    socket.emit('message', 'Welcome to ChatCord!');
 
     // notify when a user connects
     socket.broadcast.emit('message', 'A user has Joined the chat');
